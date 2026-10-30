@@ -13,6 +13,8 @@ class SettingsLocalDataSource {
   static const _keyFontSize = 'font_size';
   static const _keyHaptic = 'haptic';
   static const _keyContributorName = 'contributor_name';
+  static const _keyPhone = 'user_phone';
+  static const _keyEmail = 'user_email';
   static const _keyPoints = 'contribution_points';
 
   final SharedPreferences _prefs;
@@ -32,8 +34,10 @@ class SettingsLocalDataSource {
       locationEnabled: _prefs.getBool(_keyLocationEnabled) ?? false,
       fontSize: _prefs.getDouble(_keyFontSize) ?? 1.0,
       hapticFeedback: _prefs.getBool(_keyHaptic) ?? true,
-      contributorName: _prefs.getString(_keyContributorName) ?? 'أحمد محمد',
-      contributionPoints: _prefs.getInt(_keyPoints) ?? 45,
+      contributorName: _prefs.getString(_keyContributorName) ?? '',
+      phone: _prefs.getString(_keyPhone) ?? '',
+      email: _prefs.getString(_keyEmail) ?? '',
+      contributionPoints: _prefs.getInt(_keyPoints) ?? 0,
     );
   }
 
@@ -49,6 +53,8 @@ class SettingsLocalDataSource {
     await _prefs.setDouble(_keyFontSize, s.fontSize);
     await _prefs.setBool(_keyHaptic, s.hapticFeedback);
     await _prefs.setString(_keyContributorName, s.contributorName);
+    await _prefs.setString(_keyPhone, s.phone);
+    await _prefs.setString(_keyEmail, s.email);
     await _prefs.setInt(_keyPoints, s.contributionPoints);
   }
 

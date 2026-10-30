@@ -19,6 +19,7 @@ class CommunityScreen extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
     final communityState = ref.watch(communityProvider);
     final isArabic = settings.language == AppLanguage.arabic;
+    final isRegistered = settings.isProfileRegistered;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -33,72 +34,74 @@ class CommunityScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(AppSpacing.md),
-        children: [
-          // 1. Contributor Profile Card
-          _buildProfileCard(context, ref, settings, isArabic),
-          const SizedBox(height: AppSpacing.lg),
+      body: !isRegistered
+          ? _RegistrationGateView(isArabic: isArabic)
+          : ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(AppSpacing.md),
+              children: [
+                // 1. Contributor Profile Card
+                _buildProfileCard(context, ref, settings, isArabic),
+                const SizedBox(height: AppSpacing.lg),
 
-          // 2. Section Header: Actions & Contributions
-          _buildActionsHeader(isArabic),
-          const SizedBox(height: AppSpacing.sm),
+                // 2. Section Header: Actions & Contributions
+                _buildActionsHeader(isArabic),
+                const SizedBox(height: AppSpacing.sm),
 
-          // 3. Three Action Cards
-          _buildActionCard(
-            context: context,
-            title: isArabic ? 'إضافة مسجد أو مصلى جديد' : 'Add New Mosque or Musalla',
-            subtitle: isArabic
-                ? 'شارك موقع مصلى أو مسجد غير موجود على الخريطة'
-                : 'Share location of a mosque not yet on the map',
-            pointsBadge: isArabic ? '+5 نقاط مساهمة' : '+5 Contribution Points',
-            icon: Icons.add_location_alt_outlined,
-            iconColor: AppColors.primary,
-            iconBg: AppColors.primaryMuted,
-            onTap: () => _showAddMosqueSheet(context, ref, isArabic),
-          ),
-          const SizedBox(height: AppSpacing.sm),
+                // 3. Three Action Cards
+                _buildActionCard(
+                  context: context,
+                  title: isArabic ? 'إضافة مسجد أو مصلى جديد' : 'Add New Mosque or Musalla',
+                  subtitle: isArabic
+                      ? 'شارك موقع مصلى أو مسجد غير موجود على الخريطة'
+                      : 'Share location of a mosque not yet on the map',
+                  pointsBadge: isArabic ? '+5 نقاط مساهمة' : '+5 Contribution Points',
+                  icon: Icons.add_location_alt_outlined,
+                  iconColor: AppColors.primary,
+                  iconBg: AppColors.primaryMuted,
+                  onTap: () => _showAddMosqueSheet(context, ref, isArabic),
+                ),
+                const SizedBox(height: AppSpacing.sm),
 
-          _buildActionCard(
-            context: context,
-            title: isArabic ? 'تأكيد وجود مسجد قريب' : 'Confirm Nearby Mosque',
-            subtitle: isArabic
-                ? 'ساعد في التحقق من صحة المساجد المضافة حديثاً'
-                : 'Help verify newly added mosques and facilities',
-            pointsBadge: isArabic ? '+10 نقاط لكل توثيق' : '+10 Points Per Verification',
-            icon: Icons.verified_outlined,
-            iconColor: AppColors.verified,
-            iconBg: AppColors.verifiedBg,
-            onTap: () => _showConfirmMosqueSheet(context, ref, isArabic),
-          ),
-          const SizedBox(height: AppSpacing.sm),
+                _buildActionCard(
+                  context: context,
+                  title: isArabic ? 'تأكيد وجود مسجد قريب' : 'Confirm Nearby Mosque',
+                  subtitle: isArabic
+                      ? 'ساعد في التحقق من صحة المساجد المضافة حديثاً'
+                      : 'Help verify newly added mosques and facilities',
+                  pointsBadge: isArabic ? '+10 نقاط لكل توثيق' : '+10 Points Per Verification',
+                  icon: Icons.verified_outlined,
+                  iconColor: AppColors.verified,
+                  iconBg: AppColors.verifiedBg,
+                  onTap: () => _showConfirmMosqueSheet(context, ref, isArabic),
+                ),
+                const SizedBox(height: AppSpacing.sm),
 
-          _buildActionCard(
-            context: context,
-            title: isArabic ? 'الإبلاغ عن مسجد أو بيانات غير دقيقة' : 'Report Inaccurate Data',
-            subtitle: isArabic
-                ? 'أبلغ عن مسجد مغلق، مكرر أو موقع غير صحيح'
-                : 'Report closed, duplicate or inaccurate mosque info',
-            pointsBadge: isArabic ? 'مراجعة سريعة من المشرفين' : 'Quick Moderator Review',
-            icon: Icons.warning_amber_rounded,
-            iconColor: AppColors.flagged,
-            iconBg: AppColors.flaggedBg,
-            onTap: () => _showReportSheet(context, ref, isArabic),
-          ),
-          const SizedBox(height: AppSpacing.xl),
+                _buildActionCard(
+                  context: context,
+                  title: isArabic ? 'الإبلاغ عن مسجد أو بيانات غير دقيقة' : 'Report Inaccurate Data',
+                  subtitle: isArabic
+                      ? 'أبلغ عن مسجد مغلق، مكرر أو موقع غير صحيح'
+                      : 'Report closed, duplicate or inaccurate mosque info',
+                  pointsBadge: isArabic ? 'مراجعة سريعة من المشرفين' : 'Quick Moderator Review',
+                  icon: Icons.warning_amber_rounded,
+                  iconColor: AppColors.flagged,
+                  iconBg: AppColors.flaggedBg,
+                  onTap: () => _showReportSheet(context, ref, isArabic),
+                ),
+                const SizedBox(height: AppSpacing.xl),
 
-          // 4. Section Header: Community Activity Feed
-          _buildFeedHeader(isArabic),
-          const SizedBox(height: AppSpacing.sm),
+                // 4. Section Header: Community Activity Feed
+                _buildFeedHeader(isArabic),
+                const SizedBox(height: AppSpacing.sm),
 
-          // 5. Activity Feed Items
-          ...communityState.activities.map((activity) {
-            return _buildFeedItem(activity, isArabic);
-          }),
-          const SizedBox(height: AppSpacing.xxl),
-        ],
-      ),
+                // 5. Activity Feed Items
+                ...communityState.activities.map((activity) {
+                  return _buildFeedItem(activity, isArabic);
+                }),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+            ),
     );
   }
 
@@ -110,7 +113,7 @@ class CommunityScreen extends ConsumerWidget {
   ) {
     final initialLetter = settings.contributorName.isNotEmpty
         ? settings.contributorName[0]
-        : 'أ';
+        : (isArabic ? 'م' : 'M');
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -178,7 +181,7 @@ class CommunityScreen extends ConsumerWidget {
                           style: AppTextStyles.headlineSm.copyWith(fontSize: 16),
                         ),
                         const SizedBox(width: 4),
-                        const Icon(Icons.edit, size: 14, color: AppColors.onSurfaceVariant),
+                        const Icon(Icons.verified, size: 14, color: AppColors.verified),
                       ],
                     ),
                     const SizedBox(height: 4),
@@ -201,9 +204,9 @@ class CommunityScreen extends ConsumerWidget {
                 ),
               ),
 
-              // Edit Name Button
+              // Edit Name / Info Button
               GestureDetector(
-                onTap: () => _showEditNameSheet(context, ref, settings.contributorName, isArabic),
+                onTap: () => _showEditProfileSheet(context, ref, settings, isArabic),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
@@ -216,7 +219,7 @@ class CommunityScreen extends ConsumerWidget {
                       const Icon(Icons.edit_outlined, size: 14, color: AppColors.primary),
                       const SizedBox(width: 4),
                       Text(
-                        isArabic ? 'تعديل الاسم' : 'Edit Name',
+                        isArabic ? 'تعديل' : 'Edit',
                         style: AppTextStyles.labelSm.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,
@@ -231,20 +234,20 @@ class CommunityScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.sm),
           const Divider(height: 16, thickness: 0.6),
 
-          // No-registration guarantee text
+          // User details summary row
           Row(
             children: [
-              Icon(Icons.verified_user_outlined, size: 14, color: AppColors.onSurfaceVariant),
+              Icon(Icons.contact_phone_outlined, size: 14, color: AppColors.onSurfaceVariant),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  isArabic
-                      ? 'الاسم يظهر مع مساهماتك المعتمدة دون الحاجة لإنشاء حساب'
-                      : 'Your name appears on your approved contributions without requiring an account',
+                  '${settings.phone} • ${settings.email}',
                   style: AppTextStyles.bodySm.copyWith(
                     color: AppColors.onSurfaceVariant,
                     fontSize: 11,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -459,7 +462,6 @@ class CommunityScreen extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          // Activity Icon
           Container(
             width: 44,
             height: 44,
@@ -471,7 +473,6 @@ class CommunityScreen extends ConsumerWidget {
           ),
           const SizedBox(width: AppSpacing.md),
 
-          // Activity text
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -545,9 +546,17 @@ class CommunityScreen extends ConsumerWidget {
     );
   }
 
-  // --- MODALS ---
-
   void _showAddMosqueSheet(BuildContext context, WidgetRef ref, bool isArabic) {
+    final settings = ref.read(settingsProvider);
+    if (!settings.isProfileRegistered) {
+      showAppToast(
+        context,
+        isArabic ? 'يرجى تسجيل بياناتك أولاً لإضافة المساجد' : 'Please register your details first',
+        icon: Icons.lock_outline,
+      );
+      return;
+    }
+
     final nameCtrl = TextEditingController();
     final addressCtrl = TextEditingController();
     bool hasWomenArea = false;
@@ -600,7 +609,6 @@ class CommunityScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
 
-                    // Mosque Name
                     TextField(
                       controller: nameCtrl,
                       decoration: InputDecoration(
@@ -616,7 +624,6 @@ class CommunityScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppSpacing.sm),
 
-                    // Address / Location
                     TextField(
                       controller: addressCtrl,
                       decoration: InputDecoration(
@@ -632,7 +639,6 @@ class CommunityScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
 
-                    // Checkboxes for key facilities
                     CheckboxListTile(
                       value: hasWomenArea,
                       activeColor: AppColors.primary,
@@ -649,7 +655,6 @@ class CommunityScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
 
-                    // Submit Button
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -702,6 +707,16 @@ class CommunityScreen extends ConsumerWidget {
   }
 
   void _showConfirmMosqueSheet(BuildContext context, WidgetRef ref, bool isArabic) {
+    final settings = ref.read(settingsProvider);
+    if (!settings.isProfileRegistered) {
+      showAppToast(
+        context,
+        isArabic ? 'يرجى تسجيل بياناتك أولاً لتأكيد المساجد' : 'Please register your details first',
+        icon: Icons.lock_outline,
+      );
+      return;
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -741,7 +756,6 @@ class CommunityScreen extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.md),
 
-              // Mock Mosque to confirm
               Container(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
@@ -824,6 +838,16 @@ class CommunityScreen extends ConsumerWidget {
   }
 
   void _showReportSheet(BuildContext context, WidgetRef ref, bool isArabic) {
+    final settings = ref.read(settingsProvider);
+    if (!settings.isProfileRegistered) {
+      showAppToast(
+        context,
+        isArabic ? 'يرجى تسجيل بياناتك أولاً لتقديم البلاغات' : 'Please register your details first',
+        icon: Icons.lock_outline,
+      );
+      return;
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -905,13 +929,16 @@ class CommunityScreen extends ConsumerWidget {
     );
   }
 
-  void _showEditNameSheet(
+  void _showEditProfileSheet(
     BuildContext context,
     WidgetRef ref,
-    String currentName,
+    AppSettings settings,
     bool isArabic,
   ) {
-    final ctrl = TextEditingController(text: currentName);
+    final nameCtrl = TextEditingController(text: settings.contributorName);
+    final phoneCtrl = TextEditingController(text: settings.phone);
+    final emailCtrl = TextEditingController(text: settings.email);
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -944,21 +971,42 @@ class CommunityScreen extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
-                isArabic ? 'تعديل اسم المساهم' : 'Edit Contributor Name',
+                isArabic ? 'تعديل بيانات المساهم' : 'Edit Contributor Info',
                 style: AppTextStyles.headlineSm,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                isArabic
-                    ? 'هذا الاسم يظهر بجوار مساهماتك وتوثيقاتك لمساعدة المصلين'
-                    : 'This name appears next to your contributions to help worshippers',
-                style: AppTextStyles.bodySm.copyWith(color: AppColors.onSurfaceVariant),
               ),
               const SizedBox(height: AppSpacing.md),
               TextField(
-                controller: ctrl,
+                controller: nameCtrl,
                 decoration: InputDecoration(
-                  labelText: isArabic ? 'الاسم المستعار' : 'Contributor Name',
+                  labelText: isArabic ? 'الاسم الكامل' : 'Full Name',
+                  filled: true,
+                  fillColor: AppColors.surfaceContainer,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              TextField(
+                controller: phoneCtrl,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  labelText: isArabic ? 'رقم الهاتف' : 'Phone Number',
+                  filled: true,
+                  fillColor: AppColors.surfaceContainer,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              TextField(
+                controller: emailCtrl,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: isArabic ? 'البريد الإلكتروني' : 'Email Address',
                   filled: true,
                   fillColor: AppColors.surfaceContainer,
                   border: OutlineInputBorder(
@@ -973,14 +1021,28 @@ class CommunityScreen extends ConsumerWidget {
                 height: 48,
                 child: ElevatedButton(
                   onPressed: () {
-                    final newName = ctrl.text.trim();
-                    if (newName.isNotEmpty) {
-                      ref.read(settingsProvider.notifier).setContributorName(newName);
+                    final newName = nameCtrl.text.trim();
+                    final newPhone = phoneCtrl.text.trim();
+                    final newEmail = emailCtrl.text.trim();
+
+                    if (newName.isEmpty || newPhone.isEmpty || newEmail.isEmpty) {
+                      showAppToast(
+                        context,
+                        isArabic ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all fields',
+                      );
+                      return;
                     }
+
+                    ref.read(settingsProvider.notifier).updateProfile(
+                          name: newName,
+                          phone: newPhone,
+                          email: newEmail,
+                        );
+
                     Navigator.pop(ctx);
                     showAppToast(
                       context,
-                      isArabic ? 'تم تحديث الاسم بنجاح' : 'Name updated successfully',
+                      isArabic ? 'تم تحديث البيانات بنجاح' : 'Info updated successfully',
                       icon: Icons.check_circle_outline,
                     );
                   },
@@ -991,13 +1053,295 @@ class CommunityScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                     ),
                   ),
-                  child: Text(isArabic ? 'حفظ الاسم' : 'Save Name'),
+                  child: Text(isArabic ? 'حفظ البيانات' : 'Save Info'),
                 ),
               ),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+// ── Registration & Onboarding Gate View ──────────────────────────────────
+class _RegistrationGateView extends ConsumerStatefulWidget {
+  final bool isArabic;
+  const _RegistrationGateView({required this.isArabic});
+
+  @override
+  ConsumerState<_RegistrationGateView> createState() => _RegistrationGateViewState();
+}
+
+class _RegistrationGateViewState extends ConsumerState<_RegistrationGateView> {
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  void _submitRegistration() {
+    if (!_formKey.currentState!.validate()) return;
+
+    final name = _nameController.text.trim();
+    final phone = _phoneController.text.trim();
+    final email = _emailController.text.trim();
+
+    ref.read(settingsProvider.notifier).updateProfile(
+          name: name,
+          phone: phone,
+          email: email,
+        );
+
+    showAppToast(
+      context,
+      widget.isArabic
+          ? 'مرحباً بك! تم تسجيلك بنجاح وحصلت على +45 نقطة ترحيبية'
+          : 'Welcome! Registration complete (+45 welcome points)',
+      icon: Icons.stars_rounded,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isArabic = widget.isArabic;
+
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            const SizedBox(height: AppSpacing.sm),
+
+            // Lock / Shield Icon
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: AppColors.primaryMuted,
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.primary.withAlpha(60), width: 2),
+              ),
+              child: const Icon(
+                Icons.how_to_reg_rounded,
+                size: 42,
+                color: AppColors.primary,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+
+            // Title
+            Text(
+              isArabic ? 'الانضمام لمجتمع روّاد المساجد' : 'Join Mosque Community',
+              style: AppTextStyles.headlineSm.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 6),
+
+            // Description
+            Text(
+              isArabic
+                  ? 'مجتمع مساجد الحي مخصص للمصلين المعتمدين. يُشترط إدخال الاسم ورقم الهاتف والبريد الإلكتروني للوصول إلى الخلاصة الحية، إضافة مساجد جديدة، وتأكيد المواقيت.'
+                  : 'The community is reserved for verified members. Please enter your name, phone, and email to view contributions and participate.',
+              style: AppTextStyles.bodyMd.copyWith(
+                color: AppColors.onSurfaceVariant,
+                fontSize: 13,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+
+            // Input Fields Card
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceLowest,
+                borderRadius: AppSpacing.cardRadius,
+                border: Border.all(color: AppColors.outlineVariant.withAlpha(80)),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.onSurface.withAlpha(8),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  // Name Field
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: isArabic ? 'الاسم الكامل *' : 'Full Name *',
+                      prefixIcon: const Icon(Icons.person_outline, color: AppColors.primary),
+                      hintText: isArabic ? 'مثال: أحمد محمد' : 'e.g. Ahmed Mohamed',
+                      filled: true,
+                      fillColor: AppColors.surfaceContainer,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (val) {
+                      if (val == null || val.trim().length < 3) {
+                        return isArabic
+                            ? 'يرجى كتابة اسم صحيح (3 أحرف على الأقل)'
+                            : 'Please enter a valid name (3+ chars)';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+
+                  // Phone Field
+                  TextFormField(
+                    controller: _phoneController,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      labelText: isArabic ? 'رقم الهاتف *' : 'Phone Number *',
+                      prefixIcon: const Icon(Icons.phone_outlined, color: AppColors.primary),
+                      hintText: '01xxxxxxxxx',
+                      filled: true,
+                      fillColor: AppColors.surfaceContainer,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (val) {
+                      if (val == null || val.trim().length < 8) {
+                        return isArabic
+                            ? 'يرجى إدخال رقم هاتف صالح'
+                            : 'Please enter a valid phone number';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+
+                  // Email Field
+                  TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: isArabic ? 'البريد الإلكتروني *' : 'Email Address *',
+                      prefixIcon: const Icon(Icons.email_outlined, color: AppColors.primary),
+                      hintText: 'user@example.com',
+                      filled: true,
+                      fillColor: AppColors.surfaceContainer,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (val) {
+                      if (val == null || !val.contains('@') || !val.contains('.')) {
+                        return isArabic
+                            ? 'يرجى إدخال بريد إلكتروني صحيح'
+                            : 'Please enter a valid email address';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+
+            // Benefits Checklist Card
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              decoration: BoxDecoration(
+                color: AppColors.verifiedBg,
+                borderRadius: AppSpacing.cardRadius,
+                border: Border.all(color: AppColors.verified.withAlpha(60)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.stars_rounded, color: AppColors.verified, size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        isArabic ? 'مميزات الانضمام للمجتمع:' : 'Community Benefits:',
+                        style: AppTextStyles.labelMd.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.verified,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  _buildBenefitRow(isArabic ? 'الحصول فوراً على +45 نقطة مساهمة ترحيبية' : '+45 Welcome Contribution Points'),
+                  _buildBenefitRow(isArabic ? 'صلاحية إضافة مساجد ومصليات جديدة على الخريطة' : 'Ability to add new mosques and musallas'),
+                  _buildBenefitRow(isArabic ? 'توثيق وتأكيد مواقيت الأذان والإقامة ومصلى السيدات' : 'Confirm prayer times & women facilities'),
+                  _buildBenefitRow(isArabic ? 'كسب أوسمة تقديرية ورتب مجتمعية للمساهمين' : 'Earn community recognition badges'),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+
+            // Submit Button
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton.icon(
+                onPressed: _submitRegistration,
+                icon: const Icon(Icons.check_circle_outline_rounded, size: 20),
+                label: Text(
+                  isArabic ? 'تأكيد البيانات والانضمام للمجتمع (+45 نقطة)' : 'Register & Join (+45 pts)',
+                  style: AppTextStyles.labelLg.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xl),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBenefitRow(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          const Icon(Icons.check_circle, size: 14, color: AppColors.verified),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Text(
+              text,
+              style: AppTextStyles.bodySm.copyWith(
+                color: AppColors.onSurface,
+                fontSize: 11,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

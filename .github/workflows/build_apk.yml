@@ -41,42 +41,44 @@ jobs:
       - name: 📋 Prepare APK File
         run: |
           mkdir -p release-output
-          cp build/app/outputs/flutter-apk/app-release.apk release-output/Mosque_Finder_v1.0.apk
+          cp build/app/outputs/flutter-apk/app-release.apk release-output/Mosque_Finder_v1.1.apk
+          cp build/app/outputs/flutter-apk/app-release.apk release-output/Mosque_Finder.apk
           ls -la release-output
 
       - name: 📤 Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Mosque_Finder_APK
-          path: release-output/Mosque_Finder_v1.0.apk
+          path: release-output/Mosque_Finder_v1.1.apk
 
       - name: 🏷️ Create Release & Attach APK
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main'
         with:
-          tag_name: v1.0.0
-          name: Mosque Finder v1.0.0 (Android APK)
+          tag_name: v1.1.0
+          name: Mosque Finder v1.1.0 (Android APK)
           body: |
-            ## 🕌 مستكشف المساجد - Mosque Finder v1.0.0
-            
-            نسخة APK الرسمية والجاهزة للتثبيت الفوري والإرسال لجميع أجهزة أندرويد.
-            
+            ## 🕌 مستكشف المساجد - Mosque Finder v1.1.0
+
+            نسخة APK الرسمية المحدثة والجاهزة للتثبيت الفوري والإرسال لجميع أجهزة أندرويد.
+
+            ### 🆕 الجديد في هذا التحديث (v1.1.0):
+            - 🎨 **أيقونة التطبيق الرسمية الجديدة**: تصميم أيقونة فاخر مستوحى من هوية التطبيق (قبة ومآذن باللون الأخضر الزمردي) يظهر على شاشة الهاتف الرئيسية.
+            - 👤 **صفحة الملف الشخصي (Profile Screen)**: صفحة متكاملة مخصصة للمستخدم تعرض بياناته ونقاط مساهماته ورتبه وإمكانية تعديل البيانات، تفتح مباشرة عند النقر على أيقونة البروفايل في شريط التطبيق العلوي.
+            - 🛡️ **حماية مجتمع المسجد (Community Gating)**: لا يمكن تصفح مساهمات المجتمع أو تقييم/تأكيد المساجد أو إضافة مسجد جديد إلا بعد تسجيل الاسم ورقم الهاتف والبريد الإلكتروني لحماية موثوقية البيانات.
+            - 🧭 **بوصلة حقيقية بمستشعرات الهاتف الحية**: تم حذف محاكاة تحريك الهاتف واستبدالها بحسابات فورية حقيقية متصلة بمستشعر المجال المغناطيسي (Magnetometer) وموقع الـ GPS الفعلي للجهاز لتوجيه المصلي بدقة متناهية نحو الكعبة المشرفة.
+
             ### 📥 رابط التحميل المباشر:
-            اضغط على **`Mosque_Finder_v1.0.apk`** بالأسفل للتحميل المباشر على هاتفك.
-            
+            اضغط على **`Mosque_Finder_v1.1.apk`** بالأسفل للتحميل المباشر على هاتفك.
+
             ### 📱 خطوات التثبيت:
             1. بعد اكتمال التحميل، اضغط على الملف لفتحه.
             2. اختر **تثبيت (Install)**.
             3. إذا طُلب منك السماح بتثبيت تطبيقات من مصدر غير معروف، فعّل خيار السماح.
-            
-            ### ✨ مميزات التطبيق:
-            - خريطة تفاعلية بدون الحاجة لمفاتيح خارجية
-            - كشف أقرب المساجد والمصليات ومواقيت الإقامة
-            - بوصلة القبلة الذكية بدقة حسابية عالية
-            - مساهمات المجتمع وإضافة وتأكيد المساجد بدون تسجيل حساب
-            - دعم كامل للغة العربية والإنجليزية، والثيمين النهاري والليلي
           draft: false
           prerelease: false
-          files: release-output/Mosque_Finder_v1.0.apk
+          files: |
+            release-output/Mosque_Finder_v1.1.apk
+            release-output/Mosque_Finder.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

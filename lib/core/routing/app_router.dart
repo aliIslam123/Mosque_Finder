@@ -9,6 +9,7 @@ import '../../features/mosque_detail/mosque_detail_screen.dart';
 import '../../features/qibla/qibla_screen.dart';
 import '../../features/community/community_screen.dart';
 import '../../features/settings/settings_screen.dart';
+import '../../features/profile/profile_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -64,6 +65,11 @@ final appRouter = GoRouter(
         final id = state.pathParameters['id'] ?? '';
         return MosqueDetailScreen(mosqueId: id);
       },
+    ),
+    GoRoute(
+      path: '/profile',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (_, __) => const ProfileScreen(),
     ),
   ],
 );

@@ -40,6 +40,20 @@ class SettingsNotifier extends Notifier<AppSettings> {
     return _save(state.copyWith(contributorName: name.trim()));
   }
 
+  Future<void> updateProfile({
+    required String name,
+    required String phone,
+    required String email,
+  }) {
+    final points = state.contributionPoints == 0 ? 45 : state.contributionPoints;
+    return _save(state.copyWith(
+      contributorName: name.trim(),
+      phone: phone.trim(),
+      email: email.trim(),
+      contributionPoints: points,
+    ));
+  }
+
   Future<void> addPoints(int points) =>
       _save(state.copyWith(contributionPoints: state.contributionPoints + points));
 }

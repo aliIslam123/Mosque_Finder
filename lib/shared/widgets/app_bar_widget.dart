@@ -1,5 +1,6 @@
 // lib/shared/widgets/app_bar_widget.dart
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/constants/app_spacing.dart';
@@ -100,14 +101,24 @@ class _MosqueIcon extends StatelessWidget {
 class _ProfileButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: () => context.push('/profile'),
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: AppColors.primary,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withAlpha(50),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: const Icon(Icons.person, color: AppColors.onPrimary, size: 20),
       ),
-      child: const Icon(Icons.person, color: AppColors.onPrimary, size: 18),
     );
   }
 }

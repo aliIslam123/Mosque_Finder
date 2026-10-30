@@ -18,6 +18,8 @@ class AppSettings {
   final double fontSize; // 1.0 = normal
   final bool hapticFeedback;
   final String contributorName;
+  final String phone;
+  final String email;
   final int contributionPoints;
 
   const AppSettings({
@@ -31,9 +33,16 @@ class AppSettings {
     this.locationEnabled = false,
     this.fontSize = 1.0,
     this.hapticFeedback = true,
-    this.contributorName = 'أحمد محمد',
-    this.contributionPoints = 45,
+    this.contributorName = '',
+    this.phone = '',
+    this.email = '',
+    this.contributionPoints = 0,
   });
+
+  bool get isProfileRegistered =>
+      contributorName.trim().isNotEmpty &&
+      phone.trim().isNotEmpty &&
+      email.trim().isNotEmpty;
 
   double get radiusInMeters {
     switch (defaultRadius) {
@@ -69,6 +78,8 @@ class AppSettings {
     double? fontSize,
     bool? hapticFeedback,
     String? contributorName,
+    String? phone,
+    String? email,
     int? contributionPoints,
   }) {
     return AppSettings(
@@ -83,6 +94,8 @@ class AppSettings {
       fontSize: fontSize ?? this.fontSize,
       hapticFeedback: hapticFeedback ?? this.hapticFeedback,
       contributorName: contributorName ?? this.contributorName,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
       contributionPoints: contributionPoints ?? this.contributionPoints,
     );
   }

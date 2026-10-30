@@ -1,7 +1,11 @@
 // lib/features/qibla/qibla_screen.dart
+import 'dart:async';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'package:geolocator/geolocator.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_spacing.dart';
 import '../../core/constants/app_typography.dart';
@@ -20,28 +24,103 @@ class QiblaScreen extends ConsumerStatefulWidget {
 }
 
 class _QiblaScreenState extends ConsumerState<QiblaScreen> {
-  // Mock current location: Cairo, Egypt
-  static const double _cairoLat = 30.0444;
-  static const double _cairoLng = 31.2357;
+  // Default coordinates (Cairo, Egypt) as safe baseline
+  double _userLat = 30.0444;
+  double _userLng = 31.2357;
+  String _locationName = 'القاهرة، مصر';
+  bool _isLiveLocation = false;
 
-  late final double _qiblaBearing;
-  double _currentHeading = 110.0; // Simulated heading
+  late double _qiblaBearing;
+  double _currentHeading = 0.0;
+  bool _hasSensorSignal = false;
+  bool _lastAlignedState = false;
+
+  StreamSubscription<MagnetometerEvent>? _sensorSubscription;
 
   @override
   void initState() {
     super.initState();
-    _qiblaBearing = QiblaUtils.calculateQibla(
-      _cairoLat,
-      _cairoLng,
+    _qiblaBearing = QiblaUtils.calculateQibla(_userLat, _userLng);
+    _initSensors();
+    _requestLiveLocation();
+  }
+
+  @override
+  void dispose() {
+    _sensorSubscription?.cancel();
+    super.dispose();
+  }
+
+  void _initSensors() {
+    _sensorSubscription = magnetometerEventStream(
+      samplingPeriod: SensorInterval.uiInterval,
+    ).listen(
+      (event) {
+        // Calculate compass azimuth from magnetometer vectors
+        final rawHeading = (math.atan2(-event.x, event.y) * 180 / math.pi + 360) % 360;
+
+        // Apply low-pass filter (exponential smoothing) to eliminate jitter
+        final diff = (rawHeading - _currentHeading + 540) % 360 - 180;
+        final newHeading = (_currentHeading + diff * 0.25 + 360) % 360;
+
+        if (mounted) {
+          setState(() {
+            _hasSensorSignal = true;
+            _currentHeading = newHeading;
+          });
+          _checkAlignmentFeedback();
+        }
+      },
+      onError: (err) {
+        if (mounted) {
+          setState(() => _hasSensorSignal = false);
+        }
+      },
     );
+  }
+
+  Future<void> _requestLiveLocation() async {
+    try {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+
+      if (permission == LocationPermission.whileInUse ||
+          permission == LocationPermission.always) {
+        final pos = await Geolocator.getCurrentPosition(
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high,
+            timeLimit: Duration(seconds: 5),
+          ),
+        );
+
+        if (mounted) {
+          setState(() {
+            _userLat = pos.latitude;
+            _userLng = pos.longitude;
+            _isLiveLocation = true;
+            _qiblaBearing = QiblaUtils.calculateQibla(pos.latitude, pos.longitude);
+            _locationName = '${pos.latitude.toStringAsFixed(2)}° N, ${pos.longitude.toStringAsFixed(2)}° E';
+          });
+        }
+      }
+    } catch (_) {
+      // Fallback seamlessly to Cairo coordinates
+    }
   }
 
   bool get _isAligned => (_currentHeading - _qiblaBearing).abs() <= 3.0;
 
-  void _triggerHapticIfAligned() {
-    if (_isAligned) {
-      HapticFeedback.mediumImpact();
+  void _checkAlignmentFeedback() {
+    final currentlyAligned = _isAligned;
+    if (currentlyAligned && !_lastAlignedState) {
+      final settings = ref.read(settingsProvider);
+      if (settings.hapticFeedback) {
+        HapticFeedback.mediumImpact();
+      }
     }
+    _lastAlignedState = currentlyAligned;
   }
 
   @override
@@ -50,8 +129,8 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
     final isArabic = settings.language == AppLanguage.arabic;
 
     final diff = (_qiblaBearing - _currentHeading).round();
-    final directionAdvice = diff == 0
-        ? (isArabic ? 'أنت تواجه القبلة مباشرة' : 'Directly facing Qibla')
+    final directionAdvice = _isAligned
+        ? (isArabic ? 'أنت تواجه القبلة مباشرة 🕋' : 'Directly Facing Qibla 🕋')
         : diff > 0
             ? (isArabic ? 'أدر الهاتف يميناً بمقدار $diff°' : 'Turn right by $diff°')
             : (isArabic
@@ -64,13 +143,14 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
         title: isArabic ? 'اتجاه القبلة' : 'Qibla Direction',
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded, color: AppColors.onSurface),
-            tooltip: isArabic ? 'إعادة ضبط المحاكاة' : 'Reset Simulation',
+            icon: const Icon(Icons.my_location_rounded, color: AppColors.primary),
+            tooltip: isArabic ? 'تحديث الموقع الجغرافي' : 'Update Location',
             onPressed: () {
-              setState(() => _currentHeading = 110.0);
+              _requestLiveLocation();
               showAppToast(
                 context,
-                isArabic ? 'تمت إعادة ضبط اتجاه البوصلة' : 'Compass heading reset',
+                isArabic ? 'جاري تحديث الموقع وحساب القبلة...' : 'Updating location...',
+                icon: Icons.gps_fixed_rounded,
               );
             },
           ),
@@ -78,86 +158,68 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          child: Column(
-            children: [
-              // 1. Mandatory Phase 1 Demo Banner
-              _buildDemoBanner(isArabic),
-              const SizedBox(height: AppSpacing.md),
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: Column(
+          children: [
+            // 1. Live Sensor Status Banner
+            _buildSensorStatusBadge(isArabic),
+            const SizedBox(height: AppSpacing.md),
 
-              // 2. Heading Degree & Alignment Badge
-              _buildStatusHeader(isArabic, directionAdvice),
-              const SizedBox(height: AppSpacing.xl),
+            // 2. Heading Degree & Direction Advice Pill
+            _buildHeadingHeader(isArabic, directionAdvice),
+            const SizedBox(height: AppSpacing.xl),
 
-              // 3. Central Compass
-              Center(
-                child: CompassWidget(
-                  heading: _currentHeading,
-                  qiblaBearing: _qiblaBearing,
-                  isAligned: _isAligned,
-                ),
+            // 3. Central Interactive Real Compass
+            Center(
+              child: CompassWidget(
+                heading: _currentHeading,
+                qiblaBearing: _qiblaBearing,
+                isAligned: _isAligned,
               ),
-              const SizedBox(height: AppSpacing.xl),
+            ),
+            const SizedBox(height: AppSpacing.xl),
 
-              // 4. Interactive Simulation Slider
-              _buildSimulationSlider(isArabic),
-              const SizedBox(height: AppSpacing.md),
+            // 4. Calibration & Guidance Card
+            _buildCalibrationCard(isArabic),
+            const SizedBox(height: AppSpacing.md),
 
-              // 5. Quick Auto-Align Button
-              _buildAutoAlignButton(isArabic),
-              const SizedBox(height: AppSpacing.lg),
-
-              // 6. Coordinates & Details Card
-              _buildCoordinatesCard(isArabic),
-              const SizedBox(height: AppSpacing.lg),
-            ],
-          ),
+            // 5. Geographic Coordinates & Azimuth Card
+            _buildCoordinatesCard(isArabic),
+            const SizedBox(height: AppSpacing.lg),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildDemoBanner(bool isArabic) {
+  Widget _buildSensorStatusBadge(bool isArabic) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md,
-        vertical: AppSpacing.sm,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.unverifiedBg,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        border: Border.all(color: AppColors.unverified.withAlpha(90)),
+        color: AppColors.surfaceLowest,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
+        border: Border.all(color: AppColors.outlineVariant.withAlpha(70)),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.info_outline_rounded,
-            color: AppColors.unverified,
-            size: 20,
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: _hasSensorSignal ? AppColors.verified : AppColors.primary,
+              shape: BoxShape.circle,
+            ),
           ),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  isArabic ? 'وضع المعاينة التفاعلي (Demo Mode)' : 'Interactive Demo Mode',
-                  style: AppTextStyles.labelMd.copyWith(
-                    color: AppColors.unverified,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  isArabic
-                      ? 'الحساب دقيق من إحداثيات القاهرة. استخدم شريط التمرير بالأسفل لمحاكاة تدوير الهاتف واختبار التوجيه.'
-                      : 'Accurate calculation for Cairo. Use slider below to simulate rotating your device.',
-                  style: AppTextStyles.bodySm.copyWith(
-                    color: AppColors.onSurfaceVariant,
-                    fontSize: 11,
-                  ),
-                ),
-              ],
+          const SizedBox(width: 8),
+          Text(
+            _hasSensorSignal
+                ? (isArabic ? 'مستشعر البوصلة: نشط ومتصل في الوقت الفعلي' : 'Compass Sensor: Active & Live')
+                : (isArabic ? 'في انتظار إشارة مستشعر البوصلة...' : 'Waiting for sensor...'),
+            style: AppTextStyles.labelSm.copyWith(
+              color: _hasSensorSignal ? AppColors.verified : AppColors.onSurfaceVariant,
+              fontWeight: FontWeight.bold,
+              fontSize: 11,
             ),
           ),
         ],
@@ -165,10 +227,9 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
     );
   }
 
-  Widget _buildStatusHeader(bool isArabic, String directionAdvice) {
+  Widget _buildHeadingHeader(bool isArabic, String directionAdvice) {
     return Column(
       children: [
-        // Heading Display
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -179,11 +240,12 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
               style: AppTextStyles.displayLg.copyWith(
                 fontWeight: FontWeight.bold,
                 color: _isAligned ? AppColors.verified : AppColors.onSurface,
+                fontSize: 42,
               ),
             ),
             const SizedBox(width: 8),
             Text(
-              isArabic ? 'الاتجاه الحالي' : 'Current Heading',
+              isArabic ? 'الاتجاه الحالي' : 'Heading',
               style: AppTextStyles.labelMd.copyWith(
                 color: AppColors.onSurfaceVariant,
               ),
@@ -192,16 +254,15 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
         ),
         const SizedBox(height: 6),
 
-        // Alignment Pill
         AnimatedContainer(
           duration: const Duration(milliseconds: 250),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: _isAligned ? AppColors.verifiedBg : AppColors.surfaceContainer,
             borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
             border: Border.all(
               color: _isAligned ? AppColors.verified : Colors.transparent,
-              width: 1.2,
+              width: 1.4,
             ),
           ),
           child: Row(
@@ -209,7 +270,7 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
             children: [
               Icon(
                 _isAligned ? Icons.check_circle_rounded : Icons.explore_rounded,
-                size: 16,
+                size: 18,
                 color: _isAligned ? AppColors.verified : AppColors.primary,
               ),
               const SizedBox(width: 6),
@@ -227,7 +288,7 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
     );
   }
 
-  Widget _buildSimulationSlider(bool isArabic) {
+  Widget _buildCalibrationCard(bool isArabic) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
@@ -235,70 +296,39 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
         borderRadius: AppSpacing.cardRadius,
         border: Border.all(color: AppColors.outlineVariant.withAlpha(80)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                isArabic ? 'محاكاة تدوير الهاتف يدوياً:' : 'Manual Rotation Simulation:',
-                style: AppTextStyles.labelMd.copyWith(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                '${_currentHeading.round()}° / 360°',
-                style: AppTextStyles.labelSm.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.primaryMuted,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.screen_rotation_rounded, color: AppColors.primary, size: 22),
           ),
-          Slider(
-            value: _currentHeading,
-            min: 0,
-            max: 360,
-            divisions: 360,
-            activeColor: _isAligned ? AppColors.verified : AppColors.primary,
-            inactiveColor: AppColors.surfaceContainer,
-            onChanged: (val) {
-              setState(() => _currentHeading = val);
-              _triggerHapticIfAligned();
-            },
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  isArabic ? 'نصيحة لدقة البوصلة' : 'Compass Accuracy Tip',
+                  style: AppTextStyles.labelMd.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  isArabic
+                      ? 'ضع الهاتف أفقياً في راحة يدك، وحرّكه على شكل الرقم 8 في الهواء لمعايرة المستشعر إذا لاحظت أي تذبذب.'
+                      : 'Hold phone flat and move in a figure-8 motion to calibrate the magnetometer sensor.',
+                  style: AppTextStyles.bodySm.copyWith(
+                    color: AppColors.onSurfaceVariant,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildAutoAlignButton(bool isArabic) {
-    return SizedBox(
-      width: double.infinity,
-      height: 48,
-      child: OutlinedButton.icon(
-        onPressed: () {
-          setState(() => _currentHeading = _qiblaBearing);
-          HapticFeedback.heavyImpact();
-          showAppToast(
-            context,
-            isArabic
-                ? 'تمت المحاذاة مع القبلة بدقة 136°'
-                : 'Aligned with Qibla at 136°',
-            icon: Icons.check_circle_rounded,
-          );
-        },
-        icon: const Icon(Icons.gps_fixed_rounded, size: 18),
-        label: Text(
-          isArabic ? 'محاذاة تلقائية مع القبلة (136°)' : 'Auto-align to Qibla (136°)',
-          style: AppTextStyles.labelMd.copyWith(fontWeight: FontWeight.bold),
-        ),
-        style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.primary,
-          side: const BorderSide(color: AppColors.primary, width: 1.2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          ),
-        ),
       ),
     );
   }
@@ -319,15 +349,32 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
               const Icon(Icons.my_location_rounded, size: 18, color: AppColors.primary),
               const SizedBox(width: 8),
               Text(
-                isArabic ? 'بيانات الموقع والحساب الجغرافي' : 'Location & Geographic Calculation',
+                isArabic ? 'بيانات الموقع وزاوية القبلة' : 'Location & Qibla Azimuth',
                 style: AppTextStyles.headlineSm.copyWith(fontSize: 15),
               ),
+              const Spacer(),
+              if (_isLiveLocation)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.verifiedBg,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    isArabic ? 'موقع دقيق GPS' : 'GPS Live',
+                    style: AppTextStyles.labelSm.copyWith(
+                      color: AppColors.verified,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
           _buildInfoRow(
-            label: isArabic ? 'الموقع الحالي' : 'Current Location',
-            value: isArabic ? 'القاهرة، مصر (30.04° N, 31.23° E)' : 'Cairo, Egypt (30.04° N, 31.23° E)',
+            label: isArabic ? 'موقعك المحسوب' : 'Your Location',
+            value: _locationName,
           ),
           const Divider(height: 16),
           _buildInfoRow(
@@ -336,7 +383,7 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
           ),
           const Divider(height: 16),
           _buildInfoRow(
-            label: isArabic ? 'زاوية الانحراف المحسوبة' : 'Calculated Azimuth',
+            label: isArabic ? 'زاوية انحراف القبلة' : 'Qibla Bearing',
             value: '${_qiblaBearing.round()}° جنوب شرق (SE)',
           ),
         ],

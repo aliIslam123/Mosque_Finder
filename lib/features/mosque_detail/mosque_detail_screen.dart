@@ -778,6 +778,18 @@ class _MosqueDetailScreenState extends ConsumerState<MosqueDetailScreen> {
   }
 
   void _confirmMosque(bool isArabic) {
+    final settings = ref.read(settingsProvider);
+    if (!settings.isProfileRegistered) {
+      showAppToast(
+        context,
+        isArabic
+            ? 'يرجى تسجيل بياناتك في صفحة المجتمع أولاً لتتمكن من تأكيد المساجد'
+            : 'Please register in the Community tab first to confirm mosques',
+        icon: Icons.lock_outline,
+      );
+      context.push('/profile');
+      return;
+    }
     ref.read(nearbyProvider.notifier).confirmMosque(_mosque.id);
     ref.read(communityProvider.notifier).submitConfirmation(_mosque.nameAr);
     setState(() {
@@ -796,6 +808,18 @@ class _MosqueDetailScreenState extends ConsumerState<MosqueDetailScreen> {
   }
 
   void _showSuggestEditSheet(bool isArabic) {
+    final settings = ref.read(settingsProvider);
+    if (!settings.isProfileRegistered) {
+      showAppToast(
+        context,
+        isArabic
+            ? 'يرجى تسجيل بياناتك أولاً لاقتراح تعديلات'
+            : 'Please register in the Community tab first to suggest edits',
+        icon: Icons.lock_outline,
+      );
+      context.push('/profile');
+      return;
+    }
     final noteController = TextEditingController();
     showModalBottomSheet(
       context: context,
@@ -886,6 +910,18 @@ class _MosqueDetailScreenState extends ConsumerState<MosqueDetailScreen> {
   }
 
   void _showReportSheet(bool isArabic) {
+    final settings = ref.read(settingsProvider);
+    if (!settings.isProfileRegistered) {
+      showAppToast(
+        context,
+        isArabic
+            ? 'يرجى تسجيل بياناتك أولاً لتقديم البلاغات'
+            : 'Please register in the Community tab first to report',
+        icon: Icons.lock_outline,
+      );
+      context.push('/profile');
+      return;
+    }
     int selectedReason = 0;
     final reasons = [
       isArabic ? 'المسجد مغلق نهائياً أو غير موجود' : 'Mosque is closed permanently or does not exist',
