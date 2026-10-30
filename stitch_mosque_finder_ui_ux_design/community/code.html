@@ -1,0 +1,581 @@
+<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#f0fdf2;font-family:'IBM Plex Sans Arabic','IBM Plex Sans',sans-serif;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"primary":"#005a34","tertiary-container":"#885e00","secondary":"#006d3f","surface-dim":"#d0ddd4","on-background":"#131e18","on-error":"#ffffff","inverse-primary":"#82d8a2","on-secondary-fixed-variant":"#00522e","inverse-surface":"#28332c","surface-tint":"#066d40","surface-variant":"#d9e6dc","on-secondary-container":"#007443","on-tertiary-container":"#ffe0b2","on-secondary":"#ffffff","on-tertiary-fixed":"#281900","on-primary-fixed-variant":"#00522f","on-primary-fixed":"#002110","outline":"#6f7a71","on-error-container":"#93000a","on-surface":"#131e18","tertiary-fixed-dim":"#feba3a","tertiary-fixed":"#ffdeac","surface-container-highest":"#d9e6dc","error-container":"#ffdad6","tertiary":"#694700","primary-fixed-dim":"#82d8a2","on-primary-container":"#9ff7be","primary-fixed":"#9ef5bd","on-tertiary":"#ffffff","secondary-container":"#97f7b9","outline-variant":"#bec9bf","surface-bright":"#f0fdf2","on-surface-variant":"#3f4941","on-secondary-fixed":"#00210f","secondary-fixed":"#97f7b9","surface-container-high":"#deebe1","surface-container-low":"#eaf7ed","surface-container-lowest":"#ffffff","on-tertiary-fixed-variant":"#604100","primary-container":"#167447","surface-container":"#e4f1e7","secondary-fixed-dim":"#7bda9f","surface":"#f0fdf2","inverse-on-surface":"#e7f4ea","on-primary":"#ffffff","background":"#f0fdf2","error":"#ba1a1a"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-sm":"0.5rem","space-lg":"1.5rem","margin":"1rem","gutter":"1rem","space-xs":"0.25rem","space-xl":"2rem","space-md":"1rem"},"fontFamily":{"body-lg":["IBM Plex Sans Arabic","IBM Plex Sans"],"body-md":["IBM Plex Sans Arabic","IBM Plex Sans"],"headline-sm":["IBM Plex Sans Arabic","IBM Plex Sans"],"label-md":["IBM Plex Sans Arabic","IBM Plex Sans"],"label-sm":["IBM Plex Sans Arabic","IBM Plex Sans"],"label-lg":["IBM Plex Sans Arabic","IBM Plex Sans"],"body-sm":["IBM Plex Sans Arabic","IBM Plex Sans"],"headline-lg":["IBM Plex Sans Arabic","IBM Plex Sans"],"display-lg":["IBM Plex Sans Arabic","IBM Plex Sans"],"headline-md":["IBM Plex Sans Arabic","IBM Plex Sans"]},"fontSize":{"body-lg":["16px",{"lineHeight":"26px","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"headline-sm":["18px",{"lineHeight":"26px","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","fontWeight":"600"}],"label-sm":["10px",{"lineHeight":"14px","fontWeight":"500"}],"label-lg":["14px",{"lineHeight":"20px","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"18px","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"34px","fontWeight":"600"}],"display-lg":["32px",{"lineHeight":"44px","fontWeight":"700"}],"headline-md":["20px",{"lineHeight":"30px","fontWeight":"600"}]}}}};</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary"><header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)] pt-safe"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Mosque Finder App Icon" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VtJuIr-HCHx-0u_lsfxHyrACjrZaWW3g2AofDg8kOzTR8nRDuczDSxu8PU5isp8MQrV4Ah3WiyPC_oHw9vwscWqfm805nhRyTjI0O8fIfkGOeQKihF8mQ1z9pBoH0wEnofmiQKwb9Wn0kyWJxyh_7eva_wEMc1z-MXqZlqeYhhtz6Oa8iB2y2VxCdxDwA_IAkCF3eLsJksBU1CjCbAw_ft08tvEXua2YnziQVqnG2VKWzcSbe_BUI4LQ"><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface-variant leading-none">Mosque Finder</span><span class="font-headline-sm text-headline-sm text-on-surface leading-tight">Community</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="التنبيهات" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface"><div class="flex flex-col w-full px-margin space-y-space-md pb-12 select-none">
+<!-- Toast Notification System -->
+<div class="fixed top-16 inset-x-margin z-50 transform -translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-space-sm p-space-md rounded-xl bg-surface-container-lowest shadow-xl text-on-surface" id="toast-banner">
+<div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-primary-fixed text-primary" id="toast-icon-box">
+<span class="material-symbols-outlined text-[20px]" id="toast-icon">verified</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<p class="font-label-lg text-label-lg truncate text-on-surface" id="toast-title"></p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate" id="toast-desc"></p>
+</div>
+</div>
+<!-- SECTION A: Community Identity Summary (ملخص الهوية المجتمعية) -->
+<section class="w-full">
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all relative overflow-hidden">
+<!-- Ambient Glow Decoration -->
+<div class="absolute -top-12 -left-12 w-28 h-28 rounded-full bg-secondary-container/30 blur-2xl pointer-events-none"></div>
+<div class="flex items-start justify-between gap-space-sm relative z-10">
+<div class="flex items-center gap-space-sm">
+<!-- User Avatar Initial -->
+<div class="relative">
+<div class="w-13 h-13 w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm shadow-inner" id="avatar-initial">
+              أ
+            </div>
+<div class="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-secondary flex items-center justify-center ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-on-secondary text-[10px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface" id="contributor-name">أحمد محمد</span>
+<button class="text-primary hover:text-secondary p-1 rounded-full hover:bg-surface-container transition-colors inline-flex items-center" onclick="openEditNameModal()" title="تعديل الاسم">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+<!-- Points Counter -->
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label-lg text-label-lg text-primary font-bold" id="points-counter">٤٥ نقطة مساهمة</span>
+</div>
+</div>
+</div>
+<!-- Quick Mini Action -->
+<button class="px-space-sm py-1.5 rounded-lg bg-surface-container-low text-primary hover:bg-surface-container font-label-md text-label-md transition-colors flex items-center gap-1" onclick="openEditNameModal()">
+<span class="">تعديل الاسم</span>
+<span class="material-symbols-outlined text-[14px]">edit</span>
+</button>
+</div>
+<!-- Micro Explanatory Note -->
+<div class="mt-space-sm pt-space-xs flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">verified_user</span>
+<p class="leading-relaxed">الاسم يظهر مع مساهماتك المعتمدة دون الحاجة لإنشاء حساب</p>
+</div>
+</div>
+</section>
+<!-- SECTION B: Main Contribution Actions (الإجراءات الرئيسية) -->
+<section class="w-full space-y-space-sm">
+<div class="flex items-center justify-between px-1">
+<h2 class="font-label-lg text-label-lg text-on-surface font-bold">الإجراءات والمساهمات</h2>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[12px]">volunteer_activism</span>
+        خدمة روّاد المساجد
+      </span>
+</div>
+<!-- Action Card 1: Add Mosque -->
+<button class="w-full text-start p-space-md bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md hover:bg-surface-container-lowest/90 active:scale-[0.99] transition-all flex items-center justify-between gap-space-sm group" onclick="openModal('modal-add-mosque')">
+<div class="flex items-center gap-space-md min-w-0 flex-1">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center shrink-0 text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[26px]">add_location_alt</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">إضافة مسجد أو مصلى جديد</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">شارك موقع مصلى أو مسجد غير موجود على الخريطة</p>
+<div class="flex items-center gap-1 mt-1 text-primary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">stars</span>
+<span class="">+٥ نقاط مساهمة</span>
+</div>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full flex items-center justify-center text-outline group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</div>
+</button>
+<!-- Action Card 2: Confirm Mosque -->
+<button class="w-full text-start p-space-md bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md hover:bg-surface-container-lowest/90 active:scale-[0.99] transition-all flex items-center justify-between gap-space-sm group" onclick="openModal('modal-confirm-mosque')">
+<div class="flex items-center gap-space-md min-w-0 flex-1">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/40 flex items-center justify-center shrink-0 text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined text-[26px]">check_circle</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">تأكيد وجود مسجد قريب</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">ساعد في التحقق من صحة المساجد المضافة حديثًا</p>
+<div class="flex items-center gap-1 mt-1 text-secondary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span class="">+١٠ نقاط لكل توثيق</span>
+</div>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full flex items-center justify-center text-outline group-hover:text-secondary group-hover:translate-x-1 transition-all shrink-0">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</div>
+</button>
+<!-- Action Card 3: Report Mosque -->
+<button class="w-full text-start p-space-md bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md hover:bg-surface-container-lowest/90 active:scale-[0.99] transition-all flex items-center justify-between gap-space-sm group" onclick="openModal('modal-report-mosque')">
+<div class="flex items-center gap-space-md min-w-0 flex-1">
+<div class="w-12 h-12 rounded-xl bg-error-container/60 flex items-center justify-center shrink-0 text-error group-hover:bg-error group-hover:text-on-error transition-colors">
+<span class="material-symbols-outlined text-[26px]">report_problem</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">الإبلاغ عن مسجد أو بيانات غير دقيقة</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">أبلغ عن مسجد مغلق، مكرر أو موقع غير صحيح</p>
+<div class="flex items-center gap-1 mt-1 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+<span class="">مراجعة سريعة من المشرفين</span>
+</div>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full flex items-center justify-center text-outline group-hover:text-error group-hover:translate-x-1 transition-all shrink-0">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</div>
+</button>
+</section>
+<!-- SECTION C: Recent Community Activity (نشاط المجتمع الأخير) -->
+<section class="w-full space-y-space-sm">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-space-xs">
+<h2 class="font-label-lg text-label-lg text-on-surface font-bold">أحدث المساهمات المجتمعية</h2>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-sm bg-surface-container-high text-on-surface-variant">بيانات حية</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">مصر • القاهرة والجيزة</span>
+</div>
+<div class="space-y-space-xs" id="activity-feed">
+<!-- Activity 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[20px]">add_business</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between gap-space-xs flex-wrap">
+<p class="font-body-md text-body-md text-on-surface font-semibold">
+<span class="text-primary font-bold">أحمد محمد</span> أضاف <span class="font-bold">مسجد الرحمن</span>
+</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">منذ ساعتين</span>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-tertiary-fixed text-on-tertiary-fixed-variant">
+<span class="material-symbols-outlined text-[12px]">hourglass_top</span>
+<span class="">حالة المسجد: قيد التحقق</span>
+</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">• مدينة نصر</span>
+</div>
+</div>
+</div>
+<!-- Activity 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0 text-secondary">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between gap-space-xs flex-wrap">
+<p class="font-body-md text-body-md text-on-surface font-semibold">
+<span class="text-secondary font-bold">منى علي</span> أكدت وجود <span class="font-bold">مسجد النور</span>
+</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">منذ ٥ ساعات</span>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-secondary-container/50 text-on-secondary-container">
+<span class="material-symbols-outlined text-[12px]">stars</span>
+<span class="">+١٠ نقاط مساهمة</span>
+</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">• المعادي</span>
+</div>
+</div>
+</div>
+<!-- Activity 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center shrink-0 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">flag</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between gap-space-xs flex-wrap">
+<p class="font-body-md text-body-md text-on-surface font-semibold">
+<span class="">مساهمة جديدة لمصلى <span class="font-bold">التوحيد</span></span>
+</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">أمس</span>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface-variant">
+<span class="material-symbols-outlined text-[12px]">group</span>
+<span class="">تحتاج مراجعة المجتمع (٢/٣ تأكيدات)</span>
+</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">• الدقي</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ======================== MODAL 1: إضافة مسجد ======================== -->
+<div aria-modal="true" class="fixed inset-0 z-50 hidden" id="modal-add-mosque" role="dialog">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm transition-opacity" onclick="closeModal('modal-add-mosque')"></div>
+<!-- Drawer / Bottom Sheet -->
+<div class="absolute bottom-0 inset-x-0 max-h-[795px] bg-surface-container-lowest rounded-t-[24px] shadow-2xl flex flex-col overflow-hidden animate-slide-up">
+<!-- Grab Handle -->
+<div class="w-full flex justify-center py-2.5 shrink-0 bg-surface-container-lowest">
+<div class="w-10 h-1.5 rounded-full bg-outline-variant"></div>
+</div>
+<!-- Header -->
+<div class="px-space-md pb-space-xs flex items-center justify-between shrink-0">
+<div class="flex items-center gap-space-xs">
+<div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">add_location_alt</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">إضافة مسجد أو مصلى</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">شارك الإحداثيات لتصل للمصلين فور التوثيق</p>
+</div>
+</div>
+<button class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" onclick="closeModal('modal-add-mosque')">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Sheet Scrollable Content -->
+<div class="p-space-md overflow-y-auto space-y-space-md">
+<!-- Interactive Mock Map Box -->
+<div class="relative w-full h-44 rounded-xl overflow-hidden shadow-inner group">
+<div class="w-full h-full bg-cover bg-center" data-location="Nasr City, Cairo, Egypt" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCPzxWA8SHqOgs3EyraUduD__9JcqIUx3JowK874KiD4pQWS2suMkOoMV_GQBzr7ErWvzpJmk-_8V_rzBu-X1sXrrPsuiarJIpOJY711b88AIjKN-_lMcC5HDwxcb_v4A-7pVFuLe10e92bEe8pQmka6syA9BvmuwLHy-FMN_E9FGJ5zurgF_6ghpPDImAFyVtzpGx0HGxAvo0bKVUm6mCQTsaJH2yUDwkBKz824PJQGRe9CI7gvlo')"></div>
+<div class="absolute inset-0 bg-inverse-surface/10 pointer-events-none"></div>
+<!-- Centered Pin Simulation -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative -translate-y-4 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-[38px] drop-shadow-md" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<div class="w-2.5 h-1 rounded-full bg-on-background/40 blur-[1px]"></div>
+</div>
+</div>
+<!-- Location Selector Floating Button -->
+<button class="absolute bottom-2.5 right-2.5 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1.5 rounded-lg shadow-md flex items-center gap-1.5 hover:bg-surface-container transition-colors" onclick="detectUserLocation()" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary" id="loc-pin-icon">my_location</span>
+<span id="loc-pin-text" class="">تحديد موقعي الحالي</span>
+</button>
+</div>
+<!-- Form Fields -->
+<div class="space-y-space-sm">
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1 font-semibold">اسم المسجد أو المصلى *</label>
+<input class="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all font-body-md text-body-md" id="mosque-name-input" placeholder="مثال: مسجد الإيمان، مصلى سنتر الحكمة" type="text">
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1 font-semibold">ملاحظات العنوان / المعالم القريبة</label>
+<input class="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all font-body-md text-body-md" id="mosque-desc-input" placeholder="مثال: بجوار محطة المترو، الطابق الأرضي" type="text">
+</div>
+<div class="flex items-center gap-space-sm p-space-sm rounded-xl bg-surface-container-low">
+<input class="w-5 h-5 accent-primary rounded cursor-pointer" id="mosque-wudhu-check" type="checkbox">
+<label class="font-body-sm text-body-sm text-on-surface cursor-pointer select-none" for="mosque-wudhu-check">
+              يوجد مكان مخصص للوضوء ومصلى للسيدات
+            </label>
+</div>
+<!-- Confirmation Checkbox -->
+<div class="flex items-start gap-space-sm pt-1">
+<input class="w-5 h-5 mt-0.5 accent-primary rounded cursor-pointer" id="mosque-confirm-check" type="checkbox">
+<label class="font-body-sm text-body-sm text-on-surface-variant cursor-pointer select-none" for="mosque-confirm-check">
+              أتعهد بصحة ومطابقة البيانات، وأعلم أن المسجد سيظهر موسوماً بـ «غير متحقق منه» حتى اعتماده من المجتمع.
+            </label>
+</div>
+</div>
+<!-- Submission Button -->
+<button class="w-full h-12 bg-primary text-on-primary font-headline-sm text-headline-sm rounded-xl shadow-md hover:bg-secondary active:scale-[0.99] transition-all flex items-center justify-center gap-2" onclick="submitAddMosque()">
+<span class="material-symbols-outlined text-[20px]">send</span>
+<span class="">إرسال المسجد (+٥ نقاط)</span>
+</button>
+</div>
+</div>
+</div>
+<!-- ======================== MODAL 2: تأكيد وجود مسجد ======================== -->
+<div aria-modal="true" class="fixed inset-0 z-50 hidden" id="modal-confirm-mosque" role="dialog">
+<div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm transition-opacity" onclick="closeModal('modal-confirm-mosque')"></div>
+<div class="absolute bottom-0 inset-x-0 max-h-[751px] bg-surface-container-lowest rounded-t-[24px] shadow-2xl flex flex-col overflow-hidden animate-slide-up">
+<div class="w-full flex justify-center py-2.5 shrink-0 bg-surface-container-lowest">
+<div class="w-10 h-1.5 rounded-full bg-outline-variant"></div>
+</div>
+<div class="px-space-md pb-space-xs flex items-center justify-between shrink-0">
+<div class="flex items-center gap-space-xs">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">تأكيد وجود مسجد قريب</h3>
+<p class="font-label-sm text-label-sm text-secondary font-bold">+١٠ نقاط لكل توثيق ناجح</p>
+</div>
+</div>
+<button class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" onclick="closeModal('modal-confirm-mosque')">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="p-space-md overflow-y-auto space-y-space-md">
+<!-- Target Mosque Card to Confirm -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-bold">بانتظار تأكيدك</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">يبعد عنك ٨٠ متراً</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface font-bold">مسجد الفرقان</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">location_on</span>
+            شارع الشهيد عبد المنعم رياض، الدقي
+          </p>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+          هل قمت بزيارة أو رؤية هذا المسجد مفتوحاً للمصلين مؤخراً؟ تأكيدك يرفع درجة موثوقيته ويساعد المئات يومياً.
+        </p>
+<!-- Optional Photo Attachment Box -->
+<div class="rounded-xl border-2 border-dashed border-outline-variant p-space-md flex flex-col items-center justify-center text-center cursor-pointer hover:bg-surface-container-low transition-colors" onclick="triggerMockPhoto()">
+<span class="material-symbols-outlined text-outline text-[32px] mb-1" id="photo-icon">add_a_photo</span>
+<span class="font-label-md text-label-md text-on-surface" id="photo-text">إرفاق صورة للمسجد أو المئذنة (اختياري)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">تمنحك +٥ نقاط إضافية</span>
+</div>
+<!-- Confirm Action -->
+<div class="flex items-center gap-space-sm pt-2">
+<button class="flex-1 h-12 bg-secondary text-on-secondary font-headline-sm text-headline-sm rounded-xl shadow-md hover:bg-primary active:scale-[0.99] transition-all flex items-center justify-center gap-2" onclick="submitConfirmation(true)">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="">نعم، المسجد موجود</span>
+</button>
+<button class="px-4 h-12 bg-surface-container text-error font-label-lg text-label-lg rounded-xl hover:bg-error-container/40 transition-all flex items-center justify-center" onclick="submitConfirmation(false)">
+<span class="">غير موجود</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- ======================== MODAL 3: الإبلاغ عن مسجد ======================== -->
+<div aria-modal="true" class="fixed inset-0 z-50 hidden" id="modal-report-mosque" role="dialog">
+<div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm transition-opacity" onclick="closeModal('modal-report-mosque')"></div>
+<div class="absolute bottom-0 inset-x-0 max-h-[751px] bg-surface-container-lowest rounded-t-[24px] shadow-2xl flex flex-col overflow-hidden animate-slide-up">
+<div class="w-full flex justify-center py-2.5 shrink-0 bg-surface-container-lowest">
+<div class="w-10 h-1.5 rounded-full bg-outline-variant"></div>
+</div>
+<div class="px-space-md pb-space-xs flex items-center justify-between shrink-0">
+<div class="flex items-center gap-space-xs">
+<div class="w-9 h-9 rounded-full bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[20px]">flag</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">الإبلاغ عن بيانات غير دقيقة</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">مراجعة بيانات المسجد وصحة الموقع</p>
+</div>
+</div>
+<button class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" onclick="closeModal('modal-report-mosque')">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="p-space-md overflow-y-auto space-y-space-md">
+<!-- Reason Radio List -->
+<div class="space-y-space-xs" id="report-reasons-group">
+<label class="flex items-center gap-space-sm p-space-sm rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="w-4 h-4 accent-error" name="report-reason" type="radio" value="not_found">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-semibold">مش لاقي المسجد في المكان ده</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">المسجد هُدم أو الموقع خالي تماماً</span>
+</div>
+</label>
+<label class="flex items-center gap-space-sm p-space-sm rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input class="w-4 h-4 accent-error" name="report-reason" type="radio" value="wrong_location">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-semibold">الموقع على الخريطة مش صحيح</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">الإحداثيات تبعد عدة شوارع عن المسجد الحقيقي</span>
+</div>
+</label>
+<label class="flex items-center gap-space-sm p-space-sm rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input class="w-4 h-4 accent-error" name="report-reason" type="radio" value="not_a_mosque">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-semibold">ده مش مسجد أو مصلى عام</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">عقار خاص، متجر، أو مبنى مغلق بالكامل</span>
+</div>
+</label>
+<label class="flex items-center gap-space-sm p-space-sm rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input class="w-4 h-4 accent-error" name="report-reason" type="radio" value="duplicate">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-semibold">مسجد مكرر في نفس النطاق</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">مسجل بالفعل باسم مشابه على الخريطة</span>
+</div>
+</label>
+</div>
+<!-- Additional Notes -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1 font-semibold">تفاصيل إضافية لمساعدة المشرفين</label>
+<textarea class="w-full p-space-sm rounded-xl bg-surface-container-low text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-error transition-all font-body-sm text-body-sm resize-none" id="report-notes" placeholder="اكتب أي ملاحظة قد تفيد في تصحيح البيانات..." rows="3"></textarea>
+</div>
+<!-- Submit Report Button -->
+<button class="w-full h-12 bg-error text-on-error font-headline-sm text-headline-sm rounded-xl shadow-md hover:bg-error/90 active:scale-[0.99] transition-all flex items-center justify-center gap-2" onclick="submitReport()">
+<span class="material-symbols-outlined text-[20px]">report</span>
+<span class="">إرسال البلاغ</span>
+</button>
+</div>
+</div>
+</div>
+<!-- ======================== MODAL 4: تعديل الاسم ======================== -->
+<div aria-modal="true" class="fixed inset-0 z-50 hidden" id="modal-edit-name" role="dialog">
+<div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm transition-opacity" onclick="closeModal('modal-edit-name')"></div>
+<div class="absolute bottom-0 inset-x-0 bg-surface-container-lowest rounded-t-[24px] shadow-2xl flex flex-col overflow-hidden animate-slide-up">
+<div class="w-full flex justify-center py-2.5 shrink-0 bg-surface-container-lowest">
+<div class="w-10 h-1.5 rounded-full bg-outline-variant"></div>
+</div>
+<div class="px-space-md pb-space-xs flex items-center justify-between shrink-0">
+<div class="flex items-center gap-space-xs">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">تعديل اسم المساهم</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">الاسم الظاهر للمصلين مع مساهماتك</p>
+</div>
+</div>
+<button class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" onclick="closeModal('modal-edit-name')">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="p-space-md space-y-space-md">
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1 font-semibold">الاسم المستعار أو الحقيقي</label>
+<input class="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-on-surface focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary font-body-md text-body-md" id="edit-name-input" type="text" value="أحمد محمد">
+</div>
+<button class="w-full h-12 bg-primary text-on-primary font-headline-sm text-headline-sm rounded-xl shadow-md hover:bg-secondary transition-all flex items-center justify-center gap-2" onclick="saveContributorName()">
+<span class="material-symbols-outlined text-[20px]">check</span>
+<span class="">حفظ التعديل</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Simple State Management for Community Page
+  let userPoints = 45;
+  let userName = "أحمد محمد";
+
+  function showToast(title, desc, isSuccess = true, iconName = 'verified') {
+    const toast = document.getElementById('toast-banner');
+    const toastTitle = document.getElementById('toast-title');
+    const toastDesc = document.getElementById('toast-desc');
+    const toastIcon = document.getElementById('toast-icon');
+    const toastIconBox = document.getElementById('toast-icon-box');
+
+    toastTitle.innerText = title;
+    toastDesc.innerText = desc;
+    toastIcon.innerText = iconName;
+
+    if (isSuccess) {
+      toastIconBox.className = "w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-secondary-container text-on-secondary-container";
+    } else {
+      toastIconBox.className = "w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-error-container text-on-error-container";
+    }
+
+    toast.classList.remove('-translate-y-24', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
+    setTimeout(() => {
+      toast.classList.remove('translate-y-0', 'opacity-100');
+      toast.classList.add('-translate-y-24', 'opacity-0');
+    }, 4000);
+  }
+
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) {
+      modal.classList.remove('hidden');
+    }
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) {
+      modal.classList.add('hidden');
+    }
+  }
+
+  function openEditNameModal() {
+    document.getElementById('edit-name-input').value = userName;
+    openModal('modal-edit-name');
+  }
+
+  function saveContributorName() {
+    const val = document.getElementById('edit-name-input').value.trim();
+    if (val) {
+      userName = val;
+      document.getElementById('contributor-name').innerText = userName;
+      document.getElementById('avatar-initial').innerText = userName.charAt(0);
+      closeModal('modal-edit-name');
+      showToast('تم تحديث الاسم', `يظهر الآن كـ "${userName}" مع مساهماتك`, true, 'check');
+    }
+  }
+
+  function detectUserLocation() {
+    const btnText = document.getElementById('loc-pin-text');
+    const btnIcon = document.getElementById('loc-pin-icon');
+    btnText.innerText = "جاري تحديد الموقع...";
+    btnIcon.classList.add('animate-spin');
+
+    setTimeout(() => {
+      btnText.innerText = "تم تحديد موقعك بدقة (حي النرجس)";
+      btnIcon.classList.remove('animate-spin');
+      btnIcon.innerText = "gps_fixed";
+    }, 900);
+  }
+
+  function submitAddMosque() {
+    const nameInput = document.getElementById('mosque-name-input');
+    const mosqueName = nameInput.value.trim() || 'مسجد جديد';
+
+    // Increment points
+    userPoints += 5;
+    document.getElementById('points-counter').innerText = `${userPoints} نقطة مساهمة`;
+
+    // Prepend to activity feed
+    const feed = document.getElementById('activity-feed');
+    const newCard = document.createElement('div');
+    newCard.className = "bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-start gap-space-sm border-r-4 border-primary transition-all";
+    newCard.innerHTML = `
+      <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center shrink-0 text-primary">
+        <span class="material-symbols-outlined text-[20px]">add_business</span>
+      </div>
+      <div class="flex flex-col min-w-0 flex-1">
+        <div class="flex items-center justify-between gap-space-xs flex-wrap">
+          <p class="font-body-md text-body-md text-on-surface font-semibold">
+            <span class="text-primary font-bold">${userName}</span> أضاف <span class="font-bold">${mosqueName}</span>
+          </p>
+          <span class="font-label-sm text-label-sm text-primary font-bold">الآن</span>
+        </div>
+        <div class="flex items-center gap-space-xs mt-1">
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-tertiary-fixed text-on-tertiary-fixed-variant">
+            <span class="material-symbols-outlined text-[12px]">hourglass_top</span>
+            <span>حالة المسجد: غير متحقق منه</span>
+          </span>
+          <span class="text-on-surface-variant font-label-sm text-label-sm">• +٥ نقاط</span>
+        </div>
+      </div>
+    `;
+    feed.insertBefore(newCard, feed.firstChild);
+
+    closeModal('modal-add-mosque');
+    nameInput.value = '';
+    showToast('تمت إضافة المسجد بنجاح!', 'حالته دلوقتي غير متحقق منه، وسيتم مراجعته وتأكيده من المصلين.', true, 'task_alt');
+  }
+
+  function triggerMockPhoto() {
+    const photoText = document.getElementById('photo-text');
+    const photoIcon = document.getElementById('photo-icon');
+    photoIcon.innerText = "check_circle";
+    photoIcon.classList.add("text-secondary");
+    photoText.innerText = "تم إرفاق صورة الواجهة بنجاح ✓";
+  }
+
+  function submitConfirmation(isConfirmed) {
+    closeModal('modal-confirm-mosque');
+    if (isConfirmed) {
+      userPoints += 10;
+      document.getElementById('points-counter').innerText = `${userPoints} نقطة مساهمة`;
+      showToast('شكراً لتأكيدك المبارك! (+١٠ نقاط)', 'تم توثيق وجود مسجد الفرقان بنجاح لمساعدة المصلين.', true, 'verified');
+    } else {
+      showToast('تم تسجيل ملاحظتك', 'سيتم إرسال فريق التحقق لفحص الموقع المذكور.', false, 'info');
+    }
+  }
+
+  function submitReport() {
+    const notes = document.getElementById('report-notes').value;
+    closeModal('modal-report-mosque');
+    document.getElementById('report-notes').value = '';
+    showToast('تم إرسال البلاغ بنجاح', 'شكراً لحرصك على دقة الخريطة. المشرفون يراجعون البيانات حالياً.', true, 'shield');
+  }
+</script></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_16px_rgba(23,34,28,0.05)]" data-active-classes="text-primary font-bold"><div class="h-16 px-space-xs flex items-center justify-around"><a class="group flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-primary transition-all relative" data-path="map" href="#"><span class="material-symbols-outlined text-[24px]">map</span><span class="font-label-sm text-label-sm mt-0.5 tracking-normal">الخريطة</span></a><a class="group flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-primary transition-all relative" data-path="nearby" href="#"><span class="material-symbols-outlined text-[24px]">mosque</span><span class="font-label-sm text-label-sm mt-0.5 tracking-normal">المساجد</span></a><a aria-current="page" class="group flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 transition-all relative text-primary font-bold" data-path="community" href="#"><span class="material-symbols-outlined text-[24px]">group</span><span class="font-label-sm text-label-sm mt-0.5 tracking-normal">المجتمع</span></a><a class="group flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-primary transition-all relative" data-path="settings" href="#"><span class="material-symbols-outlined text-[24px]">settings</span><span class="font-label-sm text-label-sm mt-0.5 tracking-normal">الإعدادات</span></a></div></nav>
+
+</body></html>
