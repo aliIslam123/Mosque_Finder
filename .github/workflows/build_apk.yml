@@ -1,0 +1,82 @@
+name: Build & Release Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Mosque Finder APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 🚀 Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: 📦 Install dependencies
+        run: flutter pub get
+
+      - name: 🧪 Run tests
+        run: flutter test
+
+      - name: 🔨 Build Release APK
+        run: flutter build apk --release
+
+      - name: 📋 Prepare APK File
+        run: |
+          mkdir -p release-output
+          cp build/app/outputs/flutter-apk/app-release.apk release-output/Mosque_Finder_v1.0.apk
+          ls -la release-output
+
+      - name: 📤 Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mosque_Finder_APK
+          path: release-output/Mosque_Finder_v1.0.apk
+
+      - name: 🏷️ Create Release & Attach APK
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          tag_name: v1.0.0
+          name: Mosque Finder v1.0.0 (Android APK)
+          body: |
+            ## 🕌 مستكشف المساجد - Mosque Finder v1.0.0
+            
+            نسخة APK الرسمية والجاهزة للتثبيت الفوري والإرسال لجميع أجهزة أندرويد.
+            
+            ### 📥 رابط التحميل المباشر:
+            اضغط على **`Mosque_Finder_v1.0.apk`** بالأسفل للتحميل المباشر على هاتفك.
+            
+            ### 📱 خطوات التثبيت:
+            1. بعد اكتمال التحميل، اضغط على الملف لفتحه.
+            2. اختر **تثبيت (Install)**.
+            3. إذا طُلب منك السماح بتثبيت تطبيقات من مصدر غير معروف، فعّل خيار السماح.
+            
+            ### ✨ مميزات التطبيق:
+            - خريطة تفاعلية بدون الحاجة لمفاتيح خارجية
+            - كشف أقرب المساجد والمصليات ومواقيت الإقامة
+            - بوصلة القبلة الذكية بدقة حسابية عالية
+            - مساهمات المجتمع وإضافة وتأكيد المساجد بدون تسجيل حساب
+            - دعم كامل للغة العربية والإنجليزية، والثيمين النهاري والليلي
+          draft: false
+          prerelease: false
+          files: release-output/Mosque_Finder_v1.0.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
